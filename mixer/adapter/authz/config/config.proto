@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package adapter.authz.config;
+
+import "google/protobuf/duration.proto";
+import "gogoproto/gogo.proto";
+
+option go_package="config";
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.equal_all) = false;
+option (gogoproto.gostring_all) = false;
+
+message Params {
+    // URL for the authz service.
+    string service_url = 1;
+    // The duration for which authorization results may be cached.
+    google.protobuf.Duration cache_duration = 2 [(gogoproto.nullable) = false, (gogoproto.stdduration) = true];
+}

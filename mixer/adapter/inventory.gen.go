@@ -17,32 +17,34 @@
 package adapter
 
 import (
-	bypass "istio.io/istio/mixer/adapter/bypass"
-	circonus "istio.io/istio/mixer/adapter/circonus"
-	cloudwatch "istio.io/istio/mixer/adapter/cloudwatch"
-	denier "istio.io/istio/mixer/adapter/denier"
-	dogstatsd "istio.io/istio/mixer/adapter/dogstatsd"
-	fluentd "istio.io/istio/mixer/adapter/fluentd"
-	kubernetesenv "istio.io/istio/mixer/adapter/kubernetesenv"
-	list "istio.io/istio/mixer/adapter/list"
-	memquota "istio.io/istio/mixer/adapter/memquota"
-	noop "istio.io/istio/mixer/adapter/noop"
-	opa "istio.io/istio/mixer/adapter/opa"
-	prometheus "istio.io/istio/mixer/adapter/prometheus"
-	rbac "istio.io/istio/mixer/adapter/rbac"
-	redisquota "istio.io/istio/mixer/adapter/redisquota"
-	servicecontrol "istio.io/istio/mixer/adapter/servicecontrol"
-	signalfx "istio.io/istio/mixer/adapter/signalfx"
-	solarwinds "istio.io/istio/mixer/adapter/solarwinds"
-	stackdriver "istio.io/istio/mixer/adapter/stackdriver"
-	statsd "istio.io/istio/mixer/adapter/statsd"
-	stdio "istio.io/istio/mixer/adapter/stdio"
+	"istio.io/istio/mixer/adapter/bypass"
+	"istio.io/istio/mixer/adapter/circonus"
+	"istio.io/istio/mixer/adapter/cloudwatch"
+	"istio.io/istio/mixer/adapter/denier"
+	"istio.io/istio/mixer/adapter/dogstatsd"
+	"istio.io/istio/mixer/adapter/fluentd"
+	"istio.io/istio/mixer/adapter/kubernetesenv"
+	"istio.io/istio/mixer/adapter/list"
+	"istio.io/istio/mixer/adapter/memquota"
+	"istio.io/istio/mixer/adapter/noop"
+	"istio.io/istio/mixer/adapter/opa"
+	"istio.io/istio/mixer/adapter/prometheus"
+	"istio.io/istio/mixer/adapter/rbac"
+	"istio.io/istio/mixer/adapter/redisquota"
+	"istio.io/istio/mixer/adapter/servicecontrol"
+	"istio.io/istio/mixer/adapter/signalfx"
+	"istio.io/istio/mixer/adapter/solarwinds"
+	"istio.io/istio/mixer/adapter/stackdriver"
+	"istio.io/istio/mixer/adapter/statsd"
+	"istio.io/istio/mixer/adapter/stdio"
 	adptr "istio.io/istio/mixer/pkg/adapter"
+	"istio.io/istio/mixer/adapter/authz"
 )
 
 // Inventory returns the inventory of all available adapters.
 func Inventory() []adptr.InfoFn {
 	return []adptr.InfoFn{
+		authz.GetInfo,
 		bypass.GetInfo,
 		circonus.GetInfo,
 		cloudwatch.GetInfo,
