@@ -70,16 +70,28 @@ func (b *builder) Build(ctx context.Context, env adapter.Env) (adapter.Handler, 
 // authorization.Handler#HandleAuthorization
 func (h *handler) HandleAuthorization(ctx context.Context, inst *authorization.Instance) (adapter.CheckResult, error) {
 	logger := h.env.Logger()
-	logger.Infof("XXXX authz adapter HandleAuthorization")
+	logger.Infof("X authz adapter HandleAuthorization")
 	s := status.OK
 	result, err := h.checkPermission(inst)
-	if !result || err != nil {
+
+	logger.Infof("X check permission result: [%s], err:[%s]", result, err)
+	if err != nil {
 		if err == errUnauthenticated {
 			s = rpc.Status{Code: int32(rpc.UNAUTHENTICATED), Message: err.Error()}
 		} else {
 			s = status.WithPermissionDenied("RBAC: permission denied.")
 		}
 	}
+	if !result {
+		s = rpc.Status{Code: int32(rpc.UNAUTHENTICATED), Message: "Unauthorized"}
+	}
+	// if !result || err != nil {
+	// 	if err == errUnauthenticated {
+	// 		s = rpc.Status{Code: int32(rpc.UNAUTHENTICATED), Message: err.Error()}
+	// 	} else {
+	// 		s = status.WithPermissionDenied("RBAC: permission denied.")
+	// 	}
+	// }
 	return adapter.CheckResult{
 		Status:        s,
 		ValidDuration: h.cacheDuration,
@@ -98,7 +110,7 @@ func (h *handler) Close() error {
 // CheckPermission checks permission against authz-service
 func (h *handler) checkPermission(inst *authorization.Instance) (bool, error) {
 	logger := h.env.Logger()
-	logger.Infof("XXXX check Permission of authz adapter")
+	logger.Infof("X start check Permission of authz adapter")
 	// namespace := inst.Action.Namespace
 
 	// if namespace == "" {
@@ -164,6 +176,9 @@ func (h *handler) checkPermission(inst *authorization.Instance) (bool, error) {
 			logger.Errorf(err.Error())
 			return false, err
 		}
+
+		req.Header.Add("Content-Type", "application/json")
+		logger.Infof("request: %v", req)
 
 		resp, err := h.httpClient.Do(req)
 		if err != nil {
