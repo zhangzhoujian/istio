@@ -187,6 +187,8 @@ func (h *handler) checkPermission(inst *authorization.Instance) (bool, error) {
 
 // GetInfo returns the adapter.Info specific to this adapter.
 func GetInfo() adapter.Info {
+	fmt.Println("XXXX start get authz adapter info...")
+	
 	return adapter.Info{
 		Name: "authz",
 		//Impl:        "istio.io/istio/mixer/adapter/authz",
